@@ -38,18 +38,12 @@ int width,int height,bool fullscreen)
 	}
 	if(SDL_Init(SDL_INIT_EVERYTHING)==0)
 	{
-		cout<<"initted"<<endl;
 		window=SDL_CreateWindow(title,xpos,ypos,
 		width,height,flags);
-		if(window)
-		{
-			cout<<"wincreated"<<endl;
-		}
 		renderer=SDL_CreateRenderer(window,-1,0);
 		if(renderer)
 		{
 			SDL_SetRenderDrawColor(renderer,255,255,255,255);
-			cout<<"rencreated"<<endl;
 		}
 		ruu=1;
 	}
@@ -110,16 +104,16 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 	map->DrawMap();
+	chi1->Render();
+	chi2->Render();
+	chi3->Render();
+	chi4->Render();
 	ghost1->Render();
 	ghost2->Render();
 	ghost3->Render();
 	ghost4->Render();
 	ghost5->Render();
 	ghost6->Render();
-	chi1->Render();
-	chi2->Render();
-	chi3->Render();
-	chi4->Render();
 	p1->Render();
 	SDL_RenderPresent(renderer);
 }
