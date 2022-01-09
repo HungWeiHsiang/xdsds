@@ -19,6 +19,7 @@ Player* p1;
 Map* map;
 SDL_Renderer* Game::renderer;
 static int ruu=0;
+
 Game::Game()
 {
 	
@@ -66,13 +67,7 @@ void Game::handleEvents()
 	SDL_Event e;
 	while( SDL_PollEvent( &e ) != 0 )
     {
-        p1->handleEvent( e );
-        if(ggov())
-		{
-			break;
-		}
-    }
-	SDL_Event event;
+    SDL_Event event;
 	SDL_PollEvent(&event);
 	switch(event.type)
 	{
@@ -81,24 +76,33 @@ void Game::handleEvents()
 			break;
 		default:
 			break;
-	}
+	}	
+        p1->handleEvent( e );
+        if(ggov())
+		{
+			map->DrawMap();
+			break;
+		}
+    }
+	
 }
 
 void Game::update()
 {
-	
 	map->upd();
-	p1->Update();
-	ghost1->Update();
-	ghost2->Update();
-	ghost3->Update();
-	ghost4->Update();
-	ghost5->Update();
-	ghost6->Update();
-	chi1->Update();
-	chi2->Update();
-	chi3->Update();
-	chi4->Update();
+		p1->Update();
+		ghost1->Update();
+		ghost2->Update();
+		ghost3->Update();
+		ghost4->Update();
+		ghost5->Update();
+		ghost6->Update();
+		chi1->Update();
+		chi2->Update();
+		chi3->Update();
+		chi4->Update();	
+	
+	
 }
 void Game::render()
 {

@@ -12,9 +12,11 @@ int py;
 int cx;
 int cy;
 int gover=0;
+int fin=0;
 int cch=0;
 int tes=0;
 int ugl=1;
+int star=0;
 static int cntt=0;
 static int s=1;
 static int v=2;
@@ -37,13 +39,20 @@ int ggov()
 {
 	if(gover!=1)
 	{
-		
 		return 0;	
 	}
 	uup=0;
 	ddo=0;
 	lle=0;
 	rri=0;
+	return 1;
+}
+int finn()
+{
+	if(fin!=1)
+	{
+		return 0;	
+	}
 	return 1;
 }
 GameObject::GameObject(const char* texturesheet,int x,int y)
@@ -54,6 +63,12 @@ GameObject::GameObject(const char* texturesheet,int x,int y)
 }
 void GameObject::Update()
 {
+	
+	if(gover==1)
+	{
+		xpos=800;
+		ypos=800;
+	}
 	int lvl1[20][25]=
 	{
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -106,6 +121,9 @@ void GameObject::Update()
 		ugl=3;
 		cout<<"Warning:From now on,red clouds will chase you if you are close enough to them!!"<<endl; 
 	}
+	star=star+1;
+	if(star>400)
+	{
 	if(cntt>=1600)
 	{
 		if(xpos==px&&ypos-py<=96&&ypos>py)
@@ -321,6 +339,7 @@ void GameObject::Update()
 			ypos=ypos+1;
 		}
 	}
+	}
 	det=0;
 	gx=xpos;
 	gy=ypos;
@@ -337,12 +356,13 @@ void GameObject::Update()
 	{
 		dead();
 	}
+	
 }
 void GameObject::dead()
 {
 	if((gx-px<32&&px-gx<32&&gy==py)||(gy-py<32&&py-gy<32&&px==gx))
 	{
-		gameover();
+//		gameover();
 	}
 }
 void GameObject::gameover()
@@ -366,6 +386,12 @@ Ghost::Ghost(const char* texturesheet,int x,int y)
 }
 void Ghost::Update()
 {
+	
+	if(gover==1)
+	{
+		xpos=800;
+		ypos=800;
+	}
 	int lvl1[20][25]=
 	{
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -407,6 +433,9 @@ void Ghost::Update()
 	}
 	int t=xpos;
 	int r=ypos;
+	star=star+1;
+	if(star>400)
+	{
 	while(cntt>=1000&&gover==0&&t==xpos&&r==ypos)
 	{
 		
@@ -448,6 +477,7 @@ void Ghost::Update()
 			}		
 		}	
 	}
+	}
 	gx=xpos;
 	gy=ypos;
 	srcRect.h=32;
@@ -463,6 +493,7 @@ void Ghost::Update()
 	{
 		dead();
 	}
+	
 }
 void Ghost::dead()
 {
@@ -494,6 +525,7 @@ Player::Player(const char* texturesheet,int x,int y)
 static int dir=-1;
 void Player::handleEvent( SDL_Event& e )
 {
+	
     if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
     {
         switch( e.key.keysym.sym )
@@ -545,6 +577,11 @@ void Player::handleEvent( SDL_Event& e )
 }
 void Player::Update()
 {
+	if(gover==1)
+	{
+		xpo=800;
+		ypo=800;
+	}
 	if(uup == 1) 
 	cup=cup+1; 
 	if(ddo == 1)
@@ -603,6 +640,9 @@ void Player::Update()
 	
 	int xyx=xpo;
 	int yxy=ypo;
+	star=star+1;
+	if(star>400)
+	{
 	if(cup!=0&&cdo!=0&&cri!=0)
 	{
 		if(cup>=cdo&&cup>cri)
@@ -1037,16 +1077,12 @@ void Player::Update()
 				}	
 			}
 		}
-	}
-	if(xyx==xpo&&yxy==ypo&&ggov()!=1)
-	{
-		cout<<nup<<nle<<ndo<<nri<<endl;
 	}	
 	if(uup==1||ddo==1||rri==1||lle==1)
 	{
 		kee=0;
 	}		
-		
+	}
 	px=xpo;
 	py=ypo;
 	srcRect.h=32;
@@ -1074,6 +1110,11 @@ Chi::Chi(const char* texturesheet,int x,int y)
 }
 void Chi::Update()
 {
+	if(gover==1&&ypo<640)
+	{
+		xpo=800;
+		ypo=800;
+	}
 	int lvl1[20][25]=
 	{
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1106,312 +1147,318 @@ void Chi::Update()
 	}
 	int t=xpo;
 	int r=ypo;
-	if(det<16)
+	star=star+1;
+	if(star>400)
 	{
-		if(xpo==px&&ypo-py<=96&&ypo>py)
-		{
-			if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
-			{
-				ypo=ypo+u;
-				j=1;
-				det=det+1;
-			}
-			else if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+u;
-				j=0;
-				det=det+1;
-			}
-			else if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-u;
-				j=2;
-				det=det+1;
-			}
-		}
-		else if(ypo==py&&xpo-px<=96&&xpo>px)
-		{
-			if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+u;
-				j=0;
-				det=det+1;
-			}
-			else if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-u;
-				j=3;
-				det=det+1;
-			}
-			else if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
-			{
-				ypo=ypo+u;
-				j=1;
-				det=det+1;
-			}
-		}
-		else if(xpo==px&&py-ypo<=96&&ypo<py)
-		{
-			if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-u;
-				j=3;
-				det=det+1;
-			}
-			else if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+u;
-				j=0;
-				det=det+1;
-			}
-			else if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-u;
-				j=2;
-				det=det+1;
-			}
-		}
-		else if(ypo==py&&px-xpo<=96&&xpo<px)
-		{
-			if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-u;
-				j=2;
-				det=det+1;
-			}
-			else if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-u;
-				j=3;
-				det=det+1;
-			}
-			else if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
-			{
-				ypo=ypo+u;
-				j=1;
-				det=det+1;
-			}
-		}
-		else if(xpo-px<=48&&xpo>px&&ypo-py<=48&&ypo>py)
-		{
-			if(xpo-px<=ypo-py&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
-			{
-				ypo=ypo+u;
-				j=1;
-				det=det+1;
-			}
-			if(xpo-px>ypo-py&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+u;
-				j=0;
-				det=det+1;
-			}
-		}
-		else if(px-xpo<=48&&xpo<px&&ypo-py<=48&&ypo>py)
-		{
-			if(px-xpo<=ypo-py&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
-			{
-				ypo=ypo+u;
-				j=1;
-				det=det+1;
-			}
-			if(px-xpo>ypo-py&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-u;
-				j=2;
-				det=det+1;
-			}
-		}
-		else if(px-xpo<=48&&xpo<px&&py-ypo<=48&&ypo<py)
-		{
-			if(px-xpo<=py-ypo&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-u;
-				j=3;
-				det=det+1;
-			}
-			if(px-xpo>py-ypo&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-u;
-				j=2;
-				det=det+1;
-			}
-		}
-		else if(xpo-px<=48&&xpo>px&&py-ypo<=48&&ypo<py)
-		{
-			if(xpo-px<=py-ypo&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-u;
-				j=3;
-				det=det+1;
-			}
-			if(xpo-px>py-ypo&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+u;
-				j=0;
-				det=det+1;
-			}
-		}
-		if(det>0)
-		{
-			if(xpo%32==2)
-			{
-				xpo=xpo-2;
-			}
-			if(xpo%32==30)
-			{
-				xpo=xpo+2;
-			}
-			if(ypo%32==2)
-			{
-				ypo=ypo-2;
-			}
-			if(ypo%32==30)
-			{
-				ypo=ypo+2;
-			}
-		}	
-	}
-	if(det>=16)
+	if(r<640)
 	{
-		if(xpo==px&&ypo-py<=96&&ypo>py)
+		if(det<24)
 		{
-			if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+			if(xpo==px&&ypo-py<=96&&ypo>py)
 			{
-				ypo=ypo+v;
-				j=1;
-				det=det+1;
-			}
-		}
-		else if(ypo==py&&xpo-px<=96&&xpo>px)
-		{
-			if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+v;
-				j=0;
-				det=det+1;
-			}
-		}
-		else if(xpo==px&&py-ypo<=96&&ypo<py)
-		{
-			if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-v;
-				j=3;
-				det=det+1;
-			}
-		}
-		else if(ypo==py&&px-xpo<=96&&xpo<px)
-		{
-			if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-v;
-				j=2;
-				det=det+1;
-			}
-		}
-		else if(xpo-px<=48&&xpo>px&&ypo-py<=48&&ypo>py)
-		{
-			if(px-xpo>=py-ypo&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
-			{
-				ypo=ypo+v;
-				j=1;
-				det=det+1;
-			}
-			if(px-xpo<py-ypo&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+v;
-				j=0;
-				det=det+1;
-			}
-		}
-		else if(px-xpo<=48&&xpo<px&&ypo-py<=48&&ypo>py)
-		{
-			if(xpo-px>=py-ypo&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
-			{
-				ypo=ypo+v;
-				j=1;
-				det=det+1;
-			}
-			if(xpo-px>=py-ypo&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-v;
-				j=2;
-				det=det+1;
-			}
-		}
-		else if(px-xpo<=48&&xpo<px&&py-ypo<=48&&ypo<py)
-		{
-			if(xpo-px>=ypo-py&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-v;
-				j=3;
-				det=det+1;
-			}
-			if(xpo-px<ypo-py&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
-			{
-				xpo=xpo-v;
-				j=2;
-				det=det+1;
-			}
-		}
-		else if(xpo-px<=48&&xpo>px&&py-ypo<=48&&ypo<py)
-		{
-			if(px-xpo>=ypo-py&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
-			{
-				ypo=ypo-v;
-				j=3;
-				det=det+1;
-			}
-			if(px-xpo<ypo-py&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-			{
-				xpo=xpo+v;
-				j=0;
-				det=det+1;
-			}
-		}
-	}	
-	while(gover==0&&r<640&&t==xpo&&r==ypo)
-	{
-			det=0;
-			int tt=rand()%10+3;
-			int dn=tt%4;
-			switch(dn)
-			{
-			case 0:
-				if(j!=2&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
-				{	
-					xpo=xpo+v;
-					j=0;
-					break;
+				if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				{
+					ypo=ypo+u;
+					j=1;
+					det=det+1;
 				}
-			case 1:
-				if(j!=3&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				else if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+				{
+					xpo=xpo+u;
+					j=0;
+					det=det+1;
+				}
+				else if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+				{
+					xpo=xpo-u;
+					j=2;
+					det=det+1;
+				}
+			}
+			else if(ypo==py&&xpo-px<=96&&xpo>px)
+			{
+				if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+				{
+					xpo=xpo+u;
+					j=0;
+					det=det+1;
+				}
+				else if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+				{
+					ypo=ypo-u;
+					j=3;
+					det=det+1;
+				}
+				else if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				{
+					ypo=ypo+u;
+					j=1;
+					det=det+1;
+				}
+			}
+			else if(xpo==px&&py-ypo<=96&&ypo<py)
+			{
+				if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+				{
+					ypo=ypo-u;
+					j=3;
+					det=det+1;
+				}
+				else if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+				{
+					xpo=xpo+u;
+					j=0;
+					det=det+1;
+				}
+				else if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+				{
+					xpo=xpo-u;
+					j=2;
+					det=det+1;
+				}
+			}
+			else if(ypo==py&&px-xpo<=96&&xpo<px)
+			{
+				if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+				{
+					xpo=xpo-u;
+					j=2;
+					det=det+1;
+				}
+				else if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+				{
+					ypo=ypo-u;
+					j=3;
+					det=det+1;
+				}
+				else if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				{
+					ypo=ypo+u;
+					j=1;
+					det=det+1;
+				}
+			}
+			else if(xpo-px<=48&&xpo>px&&ypo-py<=48&&ypo>py)
+			{
+				if(xpo-px<=ypo-py&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				{
+					ypo=ypo+u;
+					j=1;
+					det=det+1;
+				}
+				if(xpo-px>ypo-py&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+				{
+					xpo=xpo+u;
+					j=0;
+					det=det+1;
+				}
+			}
+			else if(px-xpo<=48&&xpo<px&&ypo-py<=48&&ypo>py)
+			{
+				if(px-xpo<=ypo-py&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				{
+					ypo=ypo+u;
+					j=1;
+					det=det+1;
+				}
+				if(px-xpo>ypo-py&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+				{
+					xpo=xpo-u;
+					j=2;
+					det=det+1;
+				}
+			}
+			else if(px-xpo<=48&&xpo<px&&py-ypo<=48&&ypo<py)
+			{
+				if(px-xpo<=py-ypo&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+				{
+					ypo=ypo-u;
+					j=3;
+					det=det+1;
+				}
+				if(px-xpo>py-ypo&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+				{
+					xpo=xpo-u;
+					j=2;
+					det=det+1;
+				}
+			}
+			else if(xpo-px<=48&&xpo>px&&py-ypo<=48&&ypo<py)
+			{
+				if(xpo-px<=py-ypo&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+				{
+					ypo=ypo-u;
+					j=3;
+					det=det+1;
+				}
+				if(xpo-px>py-ypo&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+				{
+					xpo=xpo+u;
+					j=0;
+					det=det+1;
+				}
+			}
+			if(det>0)
+			{
+				if(xpo%32==2)
+				{
+					xpo=xpo-2;
+				}
+				if(xpo%32==30)
+				{
+					xpo=xpo+2;
+				}
+				if(ypo%32==2)
+				{
+					ypo=ypo-2;
+				}
+				if(ypo%32==30)
+				{
+					ypo=ypo+2;
+				}
+			}	
+		}
+		if(det>=24)
+		{
+			if(xpo==px&&ypo-py<=96&&ypo>py)
+			{
+				if(lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
 				{
 					ypo=ypo+v;
 					j=1;
-					break;
+					det=det+1;
 				}
-			case 2:
-				if(j!=0&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+			}
+			else if(ypo==py&&xpo-px<=96&&xpo>px)
+			{
+				if(lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
 				{
-					xpo=xpo-v;
-					j=2;
-					break;
-				}	
-			case 3:
-				if(j!=1&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+					xpo=xpo+v;
+					j=0;
+					det=det+1;
+				}
+			}
+			else if(xpo==px&&py-ypo<=96&&ypo<py)
+			{
+				if(lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
 				{
 					ypo=ypo-v;
 					j=3;
-					break;
+					det=det+1;
 				}
-			default:
+			}
+			else if(ypo==py&&px-xpo<=96&&xpo<px)
+			{
+				if(lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
 				{
-					break;	
+					xpo=xpo-v;
+					j=2;
+					det=det+1;
+				}
+			}
+			else if(xpo-px<=48&&xpo>px&&ypo-py<=48&&ypo>py)
+			{
+				if(px-xpo>=py-ypo&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				{
+					ypo=ypo+v;
+					j=1;
+					det=det+1;
+				}
+				if(px-xpo<py-ypo&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+				{
+					xpo=xpo+v;
+					j=0;
+					det=det+1;
+				}
+			}
+			else if(px-xpo<=48&&xpo<px&&ypo-py<=48&&ypo>py)
+			{
+				if(xpo-px>=py-ypo&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+				{
+					ypo=ypo+v;
+					j=1;
+					det=det+1;
+				}
+				if(xpo-px>=py-ypo&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+				{
+					xpo=xpo-v;
+					j=2;
+					det=det+1;
+				}
+			}
+			else if(px-xpo<=48&&xpo<px&&py-ypo<=48&&ypo<py)
+			{
+				if(xpo-px>=ypo-py&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+				{
+					ypo=ypo-v;
+					j=3;
+					det=det+1;
+				}
+				if(xpo-px<ypo-py&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+				{
+					xpo=xpo-v;
+					j=2;
+					det=det+1;
+				}
+			}
+			else if(xpo-px<=48&&xpo>px&&py-ypo<=48&&ypo<py)
+			{
+				if(px-xpo>=ypo-py&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+				{
+					ypo=ypo-v;
+					j=3;
+					det=det+1;
+				}
+				if(px-xpo<ypo-py&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+				{
+					xpo=xpo+v;
+					j=0;
+					det=det+1;
+				}
+			}
+		}	
+		while(gover==0&&r<640&&t==xpo&&r==ypo)
+		{
+				det=0;
+				int tt=rand()%10+3;
+				int dn=tt%4;
+				switch(dn)
+				{
+				case 0:
+					if(j!=2&&lvl1[ypo/32][xpo/32+1]!=0&&lvl1[(ypo+31)/32][xpo/32+1]!=0)
+					{	
+						xpo=xpo+v;
+						j=0;
+						break;
+					}
+				case 1:
+					if(j!=3&&lvl1[ypo/32+1][xpo/32]!=0&&lvl1[ypo/32+1][(xpo+31)/32]!=0)
+					{
+						ypo=ypo+v;
+						j=1;
+						break;
+					}
+				case 2:
+					if(j!=0&&lvl1[ypo/32][(xpo-1)/32]!=0&&lvl1[(ypo+31)/32][(xpo-1)/32]!=0)
+					{
+						xpo=xpo-v;
+						j=2;
+						break;
+					}	
+				case 3:
+					if(j!=1&&lvl1[(ypo-1)/32][xpo/32]!=0&&lvl1[(ypo-1)/32][(xpo+31)/32]!=0)
+					{
+						ypo=ypo-v;
+						j=3;
+						break;
+					}
+				default:
+					{
+						break;	
+					}		
 				}		
-			}	
-			
+		}	
+	}
 	}
 	cx=xpo;
 	cy=ypo;
@@ -1449,6 +1496,7 @@ void Chi::finish()
 		cout<<"Victory!"<<endl;
 	}
 	gover=1;
+	fin=1;
 }
 void Chi::Render()
 {

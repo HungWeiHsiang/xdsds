@@ -7,7 +7,23 @@ extern int py;
 extern int cx;
 extern int cy;
 extern int gover;
+extern int fin;
+extern int star;
 int ggov();
+int finn();
+class Ddigi
+{
+public:
+	Ddigi(const char* texturesheet,int x,int y);
+	~Ddigi();
+	void Update();
+private:
+	int xpos;
+	int ypos;
+	int i;
+	SDL_Texture* objTexture;
+	SDL_Rect srcRect, destRect;
+};
 class GameObject
 {
 public:
@@ -17,6 +33,7 @@ public:
 	void Render();
 	void dead();
 	void gameover();
+	void dis();
 private:
 	int xpos;
 	int ypos;
@@ -36,6 +53,7 @@ public:
 	void Render();
 	void dead();
 	void gameover();
+	void dis();
 private:
 	int xpos;
 	int ypos;
