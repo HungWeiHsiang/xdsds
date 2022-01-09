@@ -6,7 +6,7 @@ Game *game;
 int main(int argc,char *argv[])
 {
 	const int fps=8;
-	const int fdelay=200/fps;
+	const int fdelay=320/fps;
 	Uint32 fstart;
 	int ftime;
 	game=new Game();

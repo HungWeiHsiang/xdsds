@@ -66,7 +66,13 @@ void Game::handleEvents()
 	SDL_Event e;
 	while( SDL_PollEvent( &e ) != 0 )
     {
-    SDL_Event event;
+        p1->handleEvent( e );
+        if(ggov())
+		{
+			break;
+		}
+    }
+	SDL_Event event;
 	SDL_PollEvent(&event);
 	switch(event.type)
 	{
@@ -75,14 +81,7 @@ void Game::handleEvents()
 			break;
 		default:
 			break;
-	}	
-        p1->handleEvent( e );
-        if(ggov())
-		{
-			break;
-		}
-    }
-	
+	}
 }
 
 void Game::update()
